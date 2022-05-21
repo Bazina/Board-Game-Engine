@@ -68,8 +68,8 @@ class ChessEngine(promButs: HBox) extends GameEngine {
           turn = 1 - turn
 
         } else {
-          println(newCol)
-          println(newRow)
+          println(curPiece.curRow)
+          println(curPiece.curCol)
           println(oldRow)
           println(oldCol)
           //                GridPane.setRowIndex(source, oldRow)
@@ -82,50 +82,47 @@ class ChessEngine(promButs: HBox) extends GameEngine {
   def preparePromotion(): Unit = {
     var buts = promButs.getChildren
     buts.forEach(_.setOnMousePressed(e => {
-      var ps = curPiece.asInstanceOf[Soldier]
+      var ps : Piece = null
       var indx : Int = (e.getSceneX/100).toInt
       var name : String = null
 
       if(indx == 0){
         if(turn == 0){
           name ="bque"
-          ps.promotedMove = new Queen(null , newRow , newCol , 1 ).validateMove
+          ps = new Queen(name , newRow , newCol , 1 )
         }
         if(turn == 1) {
           name ="wque"
-          ps.promotedMove = new Queen(null , newRow , newCol , 0 ).validateMove
+          ps = new Queen(name , newRow , newCol , 0 )
         }
       }else if(indx == 1){
         if(turn == 0) {
           name ="bhor"
-          ps.promotedMove = new Knight(null , newRow , newCol , 1 ).validateMove
+          ps = new Knight(name , newRow , newCol , 1 )
         }
         if(turn == 1) {
           name ="whor"
-          ps.promotedMove = new Knight(null , newRow , newCol , 0 ).validateMove
+          ps = new Knight(name , newRow , newCol , 0 )
         }
       }else if(indx == 2){
         if(turn == 0) {
           name ="bele"
-          ps.promotedMove = new Bishop(null , newRow , newCol , 1 ).validateMove
+          ps = new Bishop(name , newRow , newCol , 1 )
         }
         if(turn == 1) {
           name ="wele"
-          ps.promotedMove = new Bishop(null , newRow , newCol , 0 ).validateMove
+          ps = new Bishop(name , newRow , newCol , 0 )
         }
       }else{
         if(turn == 0) {
           name ="bcas"
-          ps.promotedMove = new Castle(null , newRow , newCol , 1 ).validateMove
+          ps = new Castle(name , newRow , newCol , 1 )
         }
         if(turn == 1) {
           name ="wcas"
-          ps.promotedMove = new Castle(null , newRow , newCol , 0 ).validateMove
+          ps = new Castle(name , newRow , newCol , 0 )
         }
       }
-      ps.name = name
-      ps.loadImage()
-      ps.promotedDone = true
       Movement(ps.image)
       ChessController.board(newRow)(newCol) = ps
       gameController.board.getChildren.remove(src)
